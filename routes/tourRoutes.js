@@ -1,94 +1,17 @@
 const express = require('express');
-const fs = require('fs');
+const tourController = require('../controllers/tourController');
 
 const router = express.Router();
 
-const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
-);
+router
+  .route('/')
+  .get(tourController.getAllTours)
+  .post(tourController.addNewTour);
 
-const getAllTours = (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    results: tours.length,
-    data: { tours },
-  });
-};
-const getTourDetail = (req, res) => {
-  const paramId = req.params.id;
-
-  if (paramId > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'INVALID ID',
-    });
-  }
-  const tour = tours.find((tour) => tour.id === Number(paramId));
-
-  res.status(200).json({
-    status: 'success',
-    data: { tour },
-  });
-};
-const addNewTour = (req, res) => {
-  const newId = tours[tours.length - 1].id + 1;
-  const newTour = Object.assign({ id: newId }, req.body);
-  console.log(newTour);
-  tours.push(newTour);
-  fs.writeFile(
-    `${__dirname}/dev-data/data/tours-simple.json`,
-    JSON.stringify(tours),
-    (err) => {
-      res.status(201).send({
-        status: 'success',
-        data: {
-          tour: newTour,
-        },
-      });
-    }
-  );
-};
-
-const updateTour = (req, res) => {
-  const paramId = req.params.id;
-
-  if (paramId * 1 > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'INVALID ID',
-    });
-  }
-  const requestedTour = tours.find((tour) => tour.id == paramId);
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      requestTime: req.requestTime,
-      tour: requestedTour,
-    },
-  });
-};
-const deleteTour = (req, res) => {
-  const paramId = req.params.id;
-
-  if (paramId * 1 > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'INVALID ID',
-    });
-  }
-  const requestedTour = tours.find((tour) => tour.id == paramId);
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour: '<Deleted the tour>',
-    },
-  });
-};
-
-router.route('/').get(getAllTours).post(addNewTour);
-
-router.route('/:id').get(getTourDetail).patch(updateTour).delete(deleteTour);
+router
+  .route('/:id')
+  .get(tourController.getTourDetail)
+  .patch(tourController.updateTour)
+  .delete(tourController.deleteTour);
 
 module.exports = router;
