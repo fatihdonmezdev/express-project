@@ -5,7 +5,7 @@ const tours = JSON.parse(
 );
 
 exports.checkID = (req, res, next, val) => {
-  console.log(`This is the ID req ${val}`);
+  console.log(`Tour ID is: ${val}`);
   if (val * 1 > tours.length) {
     return res.status(404).json({
       status: 'fail',
@@ -31,6 +31,14 @@ exports.getTourDetail = (req, res) => {
     status: 'success',
     data: { tour },
   });
+};
+
+exports.addNewTourMiddleware = (req, res, next) => {
+  if (!req.body.name || !req.body.price) {
+    res.status(400).json({ message: 'Name or price cant be empty!' });
+  } else {
+    next();
+  }
 };
 exports.addNewTour = (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
