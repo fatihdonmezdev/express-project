@@ -1,19 +1,18 @@
+/* eslint-disable node/no-unsupported-features/es-syntax */
 const fs = require('fs');
 
 const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
+  fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`),
 );
 
 exports.checkID = (req, res, next, val) => {
-  console.log(`Tour ID is: ${val}`);
   if (val * 1 > tours.length) {
     return res.status(404).json({
       status: 'fail',
       message: 'Invalid ID',
     });
-  } else {
-    next();
   }
+  next();
 };
 
 exports.getAllTours = (req, res) => {
@@ -25,7 +24,7 @@ exports.getAllTours = (req, res) => {
 };
 exports.getTourDetail = (req, res) => {
   const paramId = req.params.id * 1;
-  const tour = tours.find((tour) => tour.id === Number(paramId));
+  const tour = tours.find((tourname) => tourname.id === Number(paramId));
 
   res.status(200).json({
     status: 'success',
@@ -42,8 +41,7 @@ exports.addNewTourMiddleware = (req, res, next) => {
 };
 exports.addNewTour = (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
-  const newTour = Object.assign({ id: newId }, req.body);
-  console.log(newTour);
+  const newTour = { ...req.body, id: newId };
   tours.push(newTour);
   fs.writeFile(
     `${__dirname}/dev-data/data/tours-simple.json`,
@@ -55,14 +53,22 @@ exports.addNewTour = (req, res) => {
           tour: newTour,
         },
       });
-    }
+      if (err) {
+        res.status(400).json({
+          status: 'error',
+          data: {
+            err,
+          },
+        });
+      }
+    },
   );
 };
 
 exports.updateTour = (req, res) => {
   const paramId = req.params.id * 1;
 
-  const requestedTour = tours.find((tour) => tour.id == paramId);
+  const requestedTour = tours.find((tour) => tour.id === paramId);
 
   res.status(200).json({
     status: 'success',
@@ -75,12 +81,12 @@ exports.updateTour = (req, res) => {
 exports.deleteTour = (req, res) => {
   const paramId = req.params.id * 1;
 
-  const requestedTour = tours.find((tour) => tour.id == paramId);
+  const requestedTour = tours.find((tour) => tour.id === paramId);
 
   res.status(200).json({
     status: 'success',
     data: {
-      tour: '<Deleted the tour>',
+      tour: requestedTour,
     },
   });
 };
