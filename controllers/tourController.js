@@ -53,28 +53,41 @@ exports.addNewTour = async (req, res) => {
  
 };
 
-exports.updateTour = (req, res) => {
-  const paramId = req.params.id * 1;
+exports.updateTour = async (req, res) => {
+  try{
+    const updatedTour = await Tour.findByIdAndUpdate(req.params.id, req.body,{
+      new: true,
+      runValidators: true,
+    })
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour: updatedTour,
+      },
+    });
+  }catch(err){
+    res.status(400).json({
+      status: 'error',
+      message: err.message
+    })
+  }
+  // const paramId = req.params.id * 1;
 
-  const requestedTour = tours.find((tour) => tour.id === paramId);
+  // const requestedTour = tours.find((tour) => tour.id === paramId);
 
-  res.status(200).json({
-    status: 'success',
-    data: {
-      requestTime: req.requestTime,
-      tour: requestedTour,
-    },
-  });
+ 
 };
 exports.deleteTour = (req, res) => {
-  const paramId = req.params.id * 1;
+  try{
 
-  const requestedTour = tours.find((tour) => tour.id === paramId);
+  }catch(err){
+    res.status(400).json({
+      status: 'error',
+      message: err.message
+    })
+  }
+  // const paramId = req.params.id * 1;
 
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour: requestedTour,
-    },
-  });
+  // const requestedTour = tours.find((tour) => tour.id === paramId);
+
 };
