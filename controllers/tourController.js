@@ -77,13 +77,17 @@ exports.updateTour = async (req, res) => {
 
  
 };
-exports.deleteTour = (req, res) => {
+exports.deleteTour = async (req, res) => {
   try{
-
+    const deletedTour = await Tour.findByIdAndDelete(req.params.id)
+    res.status(200).json({
+      status: 'success',
+      message: deletedTour
+    })
   }catch(err){
     res.status(400).json({
       status: 'error',
-      message: err.message
+      message: err
     })
   }
   // const paramId = req.params.id * 1;
