@@ -20,17 +20,23 @@ exports.getTourDetail = (req, res) => {
 };
 
 
-exports.addNewTour = (req, res) => {
-  Tour.create({
-    name: 'Test'
-  })
+exports.addNewTour = async (req, res) => {
+  try{
+    const newTour = await Tour.create(req.body)
 
-      res.status(201).send({
-        status: 'success',
-        data: {
-          tour: '<AddedTour>',
-        },
-      });
+    res.status(201).send({
+      status: 'success',
+      data: {
+        tour: newTour,
+      },
+    });
+  }catch (err) {
+    res.status(400).json({
+      status: 'error',
+      message: err.message
+    })
+  }
+ 
 };
 
 exports.updateTour = (req, res) => {
