@@ -2,8 +2,7 @@
 const dotenv = require('dotenv');
 
 dotenv.config({ path: './config.env' });
-const { default: mongoose, mongo } = require('mongoose');
-
+const { default: mongoose } = require('mongoose');
 const app = require('./app');
 
 const DB = process.env.DATABASE.replace(
@@ -35,9 +34,9 @@ const tourSchema = new mongoose.Schema({
 const Tour = mongoose.model('Tour', tourSchema);
 
 const testTour = new Tour({
-  name: 'The Forest Hiker',
-  rating: 4.7,
-  price: 405,
+  name: 'The Park Camper',
+  rating: 4.2,
+  price: 335,
 });
 
 testTour
