@@ -32,6 +32,7 @@ exports.getAllTours = async (req, res) => {
 
 exports.getTourDetail = async (req, res) => {
   try {
+    /// ID is being sent from the frontend.
     const tour = await Tour.findById(req.params.id);
     res.status(200).json({
       status: 'success',
