@@ -84,8 +84,6 @@ exports.updateTour = async (req, res) => {
     });
   }
   // const paramId = req.params.id * 1;
-
-  // const requestedTour = tours.find((tour) => tour.id === paramId);
 };
 exports.deleteTour = async (req, res) => {
   try {
