@@ -44,7 +44,6 @@ exports.getTourDetail = async (req, res) => {
       err,
     });
   }
-  // const tour = tours.find((tourname) => tourname.id === Number(paramId));
 };
 
 exports.addNewTour = async (req, res) => {
