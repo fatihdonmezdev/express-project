@@ -11,6 +11,7 @@ exports.aliasTopTours = (req, res, next) => {
 };
 exports.getAllTours = async (req, res) => {
   try {
+    /// SEPERATED THE API FEATURES FROM THE FILE TO AVOID MAKING IT TOO LONG.
     const features = new APIFeatures(Tour.find(), req.query)
       .filter()
       .sort()
