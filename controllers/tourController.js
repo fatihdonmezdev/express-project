@@ -83,7 +83,6 @@ exports.updateTour = async (req, res) => {
       message: err.message,
     });
   }
-  // const paramId = req.params.id * 1;
 };
 exports.deleteTour = async (req, res) => {
   try {
