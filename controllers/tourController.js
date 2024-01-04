@@ -100,7 +100,6 @@ exports.deleteTour = async (req, res) => {
       message: err,
     });
   }
-  // const paramId = req.params.id * 1;
 };
 
 exports.getTourStats = async (req, res) => {
