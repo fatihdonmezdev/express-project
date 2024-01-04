@@ -104,3 +104,14 @@ exports.deleteTour = async (req, res) => {
 
   // const requestedTour = tours.find((tour) => tour.id === paramId);
 };
+
+exports.getTourStats = async (req, res) => {
+  try {
+    const stats = Tour.aggregate();
+  } catch (err) {
+    res.status(400).json({
+      status: 'error',
+      message: err,
+    });
+  }
+};
